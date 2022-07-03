@@ -3,10 +3,7 @@ library (tidyverse)
 library(pdftools)
 library(JurisMiner)
 library(tokenizers)
-library(tidymodels)
-library(quanteda)
-library(LiblineaR)
-library(textrecipes)
+
 
 ## baixa decisões do tjsp a partir dos parametros informados
 
@@ -308,11 +305,7 @@ analise <- analise |>
 analise$orgao_julgador = NULL
 
 
-analise <- analise|>
-  filter(camara == "1CDC" |camara == "2CDC" |camara == "3CDC" |camara == "4CDC" |camara == "5CDC" |camara == "6CDC" |camara == "7CDC" |camara == "8CDC" |camara == "9CDC" |camara == "10CDC" |camara == "11CDC" |camara == "12CDC" |camara == "13CDC" |camara == "14CDC" |camara == "15CDC" |camara == "16CDC")
-
-
-## define se o advogado da parte é da defensoria ou não
+## define se o advogado da parte é defensor público ou não
 
 defensoria <- partes|>
   mutate(defensoria = ifelse(str_detect(representante, "(?i)defensor"),"defensoria","particular"))
@@ -414,14 +407,5 @@ analise <- analise|>
 
 saveRDS(analise, "analise.RDS")
 
-analise$ementa = NULL
-analise$relator = NULL
-analise$cdacordao = NULL
-analise$processo = NULL
-analise$decisao = NULL
-analise$dispositivo = NULL
-
-analise|>
-  count(favoravel_ao_reu, armas, sexo)
 
 
